@@ -17,10 +17,12 @@ public class ServiceManager: ServiceManagerProtocol {
     
     private var urlSession: URLSession
     private var requestBuilder: RequestBuilderProtocol
+    private var decoder: JSONDecoder
     
-    init(urlSession: URLSession = URLSession.shared, requestBuilder: RequestBuilderProtocol = RequestBuilder()) {
+    init(urlSession: URLSession = URLSession.shared, requestBuilder: RequestBuilderProtocol = RequestBuilder(), decoder: JSONDecoder = JSONDecoder()) {
         self.urlSession = urlSession
         self.requestBuilder = requestBuilder
+        self.decoder = decoder
     }
     
     func request<T>(with endpoint: Endpoint, decodeType: T.Type, completionHandler: @escaping (Result<T, NetworkError>) -> Void) where T : Decodable {
@@ -51,7 +53,7 @@ public class ServiceManager: ServiceManagerProtocol {
                 }
                 
                 do {
-                    let object: T = try JSONDecoder().decode(T.self, from: data)
+                    let object: T = try self.decoder.decode(T.self, from: data)
                     completionHandler(.success(object))
                 } catch {
                     completionHandler(.failure(.decodingError(error)))
