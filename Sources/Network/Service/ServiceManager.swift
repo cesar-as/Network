@@ -13,7 +13,7 @@ protocol ServiceManagerProtocol: AnyObject {
 
 public class ServiceManager: ServiceManagerProtocol {
         
-    static var shared: ServiceManager = ServiceManager()
+    public static var shared: ServiceManager = ServiceManager()
     
     private var urlSession: URLSession
     private var requestBuilder: RequestBuilderProtocol
@@ -25,7 +25,7 @@ public class ServiceManager: ServiceManagerProtocol {
         self.decoder = decoder
     }
     
-    func request<T>(with endpoint: Endpoint, decodeType: T.Type, completionHandler: @escaping (Result<T, NetworkError>) -> Void) where T : Decodable {
+    public func request<T>(with endpoint: Endpoint, decodeType: T.Type, completionHandler: @escaping (Result<T, NetworkError>) -> Void) where T : Decodable {
                 
         guard let url = URL(string: endpoint.url) else {
             NetworkLogger.logError(error: .invalidURL(url: endpoint.url))
