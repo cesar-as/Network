@@ -7,13 +7,13 @@
 
 import Foundation
 
-protocol ServiceManagerProtocol: AnyObject {
+protocol NetworkServiceManagerProtocol: AnyObject {
     func request<T: Decodable>(with endpoint: Endpoint, decodeType: T.Type, completionHandler: @escaping(Result<T, NetworkError>) -> Void)
 }
 
-public class ServiceManager: ServiceManagerProtocol {
+public class NetworkServiceManager: NetworkServiceManagerProtocol {
         
-    public static var shared: ServiceManager = ServiceManager()
+    public static var shared: NetworkServiceManager = NetworkServiceManager()
     
     private var urlSession: URLSession
     private var requestBuilder: RequestBuilderProtocol
